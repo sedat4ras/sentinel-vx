@@ -1,6 +1,6 @@
 # Sentinel V2 — AI-Deception Honeypot & Threat Intelligence Platform
 
-> An active-defense honeypot that baits attackers with AI-poisoned deception files, captures their every move, and delivers real-time threat intelligence via Telegram — deployed on AWS EC2 Spot Instances for near-zero cost.
+> An active-defense honeypot that baits attackers with AI-poisoned deception files, captures their every move, and delivers real-time threat intelligence via Telegram. It runs on AWS EC2 Spot Instances for near-zero cost.
 
 [![Python](https://img.shields.io/badge/Python-3.10+-blue?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
 [![Docker](https://img.shields.io/badge/Container-Cowrie_Honeypot-2496ED?style=flat-square&logo=docker&logoColor=white)](https://www.docker.com/)
@@ -14,7 +14,7 @@
 
 ## What is Sentinel V2?
 
-Sentinel V2 is a production-deployed SSH honeypot with an **active deception layer**. It doesn't just wait for attackers — it manipulates them.
+Sentinel V2 is a production-deployed SSH honeypot with an **active deception layer** that manipulates attackers instead of only waiting for them.
 
 Modern attackers feed unfamiliar config files into AI assistants (ChatGPT, Claude, Gemini) to find vulnerabilities. Sentinel V2 exploits this behavior by planting **LLM prompt-injected lure files** inside the honeypot filesystem. When an attacker feeds these files to their AI, the AI reads hidden instructions and recommends running our fake honey-commands as "critical vulnerabilities to test." The moment they run it, we have them.
 
@@ -44,7 +44,7 @@ Every session is monitored in real time. On session close, GPT-4o analyzes all c
 
 ### Live Alerts — Real Sessions Captured on First Day
 
-Within minutes of deployment, the first attacker was detected. Two different IPs hit the honeypot — one from Los Angeles (Charter Communications residential), one from Athens (OTE SA, Greece). Both received automated MITRE ATT&CK analysis.
+Within minutes of deployment, the first attacker was detected. Two different IPs hit the honeypot: one from Los Angeles (Charter Communications residential), one from Athens (OTE SA, Greece). Both received automated MITRE ATT&CK analysis.
 
 ![Live Alert 1](assets/alert-live-1.png)
 ![Live Alert 2](assets/alert-live-2.png)
@@ -57,7 +57,7 @@ Within minutes of deployment, the first attacker was detected. Two different IPs
 ### Live Terminal — Monitor + Attacker Side by Side
 ![Terminal Output](assets/terminal-output.png)
 
-*Left: `sentinel-monitor` tracking sessions in real time. Right: what the attacker actually sees inside the honeypot — a convincing fake Ubuntu filesystem.*
+*Left: `sentinel-monitor` tracking sessions in real time. Right: what the attacker actually sees inside the honeypot: a convincing fake Ubuntu filesystem.*
 
 ### n8n AI Workflow
 ![n8n Workflow](assets/n8n-workflow.png)
@@ -135,7 +135,7 @@ Modern attackers use AI assistants (ChatGPT, Claude, Gemini) to analyze unfamili
 1. Attacker enters the honeypot and finds realistic-looking config files
 2. They copy a file into their AI assistant to "find vulnerabilities"
 3. The AI reads hidden instructions embedded in the file and recommends running our honey-command as a "critical vulnerability to test"
-4. Attacker runs the command → logged + priority alert fired
+4. Attacker runs the command, which is logged and fires a priority alert
 
 **Three camouflage techniques used:**
 
@@ -149,7 +149,7 @@ Modern attackers use AI assistants (ChatGPT, Claude, Gemini) to analyze unfamili
 
 ## AI Threat Analysis — What GPT-4o Reports
 
-On session close, every command the attacker executed is sent to GPT-4o for analysis. The AI doesn't just summarize — it flags **specific lines** with contextual commentary:
+On session close, every command the attacker executed is sent to GPT-4o for analysis. The AI summarizes the session and flags **specific lines** with contextual commentary:
 
 ```
 ⚠️ Notable Actions:
@@ -204,7 +204,7 @@ MITRE ATT&CK techniques are mapped automatically (T1078, T1003, T1059, etc.).
 
 ## Deployment — AWS EC2 Spot Instance
 
-Sentinel V2 is designed to run on **AWS EC2 Spot Instances** — the same hardware as regular EC2 but at **~70% lower cost**. A t3.small Spot Instance runs the full stack for roughly **$3–5/month**.
+Sentinel V2 is designed to run on **AWS EC2 Spot Instances**, the same hardware as regular EC2 but at **~70% lower cost**. A t3.small Spot Instance runs the full stack for roughly **$3–5/month**.
 
 ### Security Group (Inbound Rules)
 
@@ -254,7 +254,7 @@ ssh -i ~/key.pem -p 2222 ubuntu@<EC2_IP> "sudo docker logs -f sentinel-monitor"
 
 ### Getting Real Attacker Information
 
-The next evolution moves beyond passive logging — deploying traps that reveal the attacker's actual identity and location.
+The next version moves beyond passive logging and deploys traps that reveal the attacker's actual identity and location.
 
 | Trap | How It Works | Data Captured |
 |------|-------------|---------------|
@@ -263,7 +263,7 @@ The next evolution moves beyond passive logging — deploying traps that reveal 
 | **Tracking pixel in lure docs** | 1×1 pixel image loading from our server embedded in lure PDFs | Real IP, user agent (reveals OS + browser used to open the file) |
 | **Fake SSH private keys** | `.pem` files that look valid — when an attacker attempts to use them to log into another server, we see their source IP making the outbound connection | Real source IP, target server they tried to access |
 
-> All techniques above are passive — they operate by enticing the attacker to use our planted data. No unauthorized access to third-party systems.
+> All techniques above are passive: they operate by enticing the attacker to use our planted data. No unauthorized access to third-party systems.
 
 ---
 
@@ -304,7 +304,7 @@ sentinel-v2/
 
 ## Prerequisites
 
-- AWS account (EC2 Spot Instance — Ubuntu 22.04)
+- AWS account (EC2 Spot Instance, Ubuntu 22.04)
 - Docker (installed by `deploy.sh`)
 - Telegram bot token + chat ID
 - n8n Cloud or self-hosted instance
@@ -315,7 +315,7 @@ sentinel-v2/
 
 ## Disclaimer
 
-For educational and research purposes only. Deployed on infrastructure you own and control. All data capture occurs within your own systems — no unauthorized access to third-party systems. Users must comply with applicable local laws (GDPR, KVKK, etc.). Attacker IPs are reported to AbuseIPDB only when there is genuine evidence of malicious activity.
+For educational and research purposes only. Deployed on infrastructure you own and control. All data capture occurs within your own systems, with no unauthorized access to third-party systems. Users must comply with applicable local laws (GDPR, KVKK, etc.). Attacker IPs are reported to AbuseIPDB only when there is genuine evidence of malicious activity.
 
 ---
 
